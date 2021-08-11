@@ -14,14 +14,14 @@
 
 #### 从字串中解析出JSON结构
 
-```
+```c
 /* Supply a block of JSON, and this returns a cJSON object you can interrogate. Call cJSON_Delete when finished. */
 cJSON *cJSON_Parse(const char *value);//从 给定的json字符串中得到cjson对象
 ```
 
 #### 增
 
-```
+```c
 /* Append item to the specified array/object. */
 CJSON_PUBLIC(cJSON_bool) cJSON_AddItemToArray(cJSON *array, cJSON *item);
 
@@ -32,29 +32,29 @@ CJSON_PUBLIC(cJSON*)cJSON_AddStringToObject(cJSON *const object, const char *con
 
 为数组类型增加子项：
 
-```
+```c
 /* Append item to the specified array/object. */
 CJSON_PUBLIC(cJSON_bool) cJSON_AddItemToArray(cJSON *array, cJSON *item);
 ```
 
 #### 删
 
-```
+```c
 /* Delete a cJSON entity and all subentities. */
 void   cJSON_Delete(cJSON *c);//删除cjson对象，释放链表占用的内存空间
 ```
 
 #### 改
 
-```
+```c
 CJSON_PUBLIC(cJSON_bool) cJSON_ReplaceItemInObject(cJSON *object, const char *string, cJSON *newitem);
 ```
 
 #### 查
 
-```
+```c
 /* Get item "string" from object. Case insensitive. */
-cJSON *cJSON_GetObjectItem(cJSON *object,const char *string);//根据键获取对应的值（cjson对象）
+cJSON *cJSON_GetObjectItem(cJSON *object, const char *string);//根据键获取对应的值（cjson对象）
 ```
 
 ### 代码示例

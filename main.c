@@ -5,6 +5,9 @@
 
 void print_json(cJSON *root) {
     //以递归的方式打印json的最内层键值对
+    //Recursively print the innermost key-value pair of json
+    printf("\n");
+
     for (int i = 0; i < cJSON_GetArraySize(root); i++) {
         //遍历最外层json键值对
         cJSON *item = cJSON_GetArrayItem(root, i);
@@ -54,14 +57,19 @@ void create_demo_json_file(char *filepath) {
                 "2021年08月10号\",\"QS\":\"#WS504\",\"ZZ\":\"#WS506\",\"GJ\":\"300mm\",\"GC\":\"波纹管\",\"LX\":\""
                 "污水管道\",\"DW\":\"苏州xx管道检测技术有限公司\",\"YU\":\"Alex\"}";
 
-    //从字串中解析出JSON结构
+    //从json字串中解析出JSON结构
     cJSON *json = cJSON_Parse(raw);
 
     //将传入的JSON结构转化为字符串 并打印
     char *buf = cJSON_Print(json);
     printf("raw json:\n%s\n", buf);
 
-    //打开一个exec.json文件，并写入json内容
+    //修改某项的节点值
+    cJSON_ReplaceItemInObject(json, "YU", cJSON_CreateString("Blex"));
+    buf = cJSON_Print(json);
+    printf("modified json:\n%s\n", buf);
+
+    //打开一个文件，并写入json内容
     FILE *fp = fopen(filepath, "w");
     fwrite(buf, strlen(buf), 1, fp);
 
@@ -106,8 +114,9 @@ void create_demo2_json_file(char *filepath) {
 int main() {
     printf("Hello, World!\n");
 
+    //创建一个包含json数据的文件
     create_demo_json_file("jiance.json");
-
+    //读取这个文件，并打印
     print_json_file("jiance.json");
 
     return 0;

@@ -1,3 +1,0 @@
-C:\Users\alex\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\212.4746.93\bin\cmake\win\bin\cmake.exe -E rm -f CMakeFiles\cjson.dir/objects.a
-D:\ide\mingw-w64\bin\ar.exe cr CMakeFiles\cjson.dir/objects.a @CMakeFiles\cjson.dir\objects1.rsp
-D:\ide\mingw-w64\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\cjson.dir/objects.a -Wl,--no-whole-archive -o cjson.exe -Wl,--out-implib,libcjson.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cjson.dir\linklibs.rsp

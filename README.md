@@ -70,12 +70,29 @@ void print_my_json(cJSON *root) {
     for (int i = 0; i < cJSON_GetArraySize(root); i++) {
         //遍历最外层json键值对
         cJSON *item = cJSON_GetArrayItem(root, i);
-        if (cJSON_Object == item->type) {
-            //如果对应键的值仍为cJSON_Object就递归调用printJson
-            print_my_json(item);
-        } else {
-            //值不为json对象就直接打印出键和值
-            printf("%s->%s\n", item->string, item->valuestring);
+        switch (item->type) {
+            case cJSON_Object: {
+                print_my_json(item);
+            }
+                break;
+            case cJSON_Number: {
+                //值不为json对象就直接打印出键和值-数字-int
+                printf("%s->%d\n", item->string, item->valueint);
+            }
+                break;
+            case cJSON_String: {
+                //值不为json对象就直接打印出键和值-字串
+                printf("%s->%s\n", item->string, item->valuestring);
+            }
+                break;
+            case cJSON_Array: {
+                printf("数组类型是什么:%s->\n", item->string);
+            }
+                break;
+            default: {
+                printf("未处理的类型:%s->\n", item->string);
+            }
+                break;
         }
     }
 }

@@ -62,12 +62,7 @@ cJSON *cJSON_GetObjectItem(cJSON *object, const char *string);//根据键获取�
 [源码](https://github.com/zhongwcool/CJsonDemo)
 
 ```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "cJSON.h"
-
-void print_json(cJSON *root) {
+void print_my_json(cJSON *root) {
     //以递归的方式打印json的最内层键值对
     //Recursively print the innermost key-value pair of json
     printf("\n");
@@ -77,7 +72,7 @@ void print_json(cJSON *root) {
         cJSON *item = cJSON_GetArrayItem(root, i);
         if (cJSON_Object == item->type) {
             //如果对应键的值仍为cJSON_Object就递归调用printJson
-            print_json(item);
+            print_my_json(item);
         } else {
             //值不为json对象就直接打印出键和值
             printf("%s->%s\n", item->string, item->valuestring);
@@ -110,7 +105,7 @@ void print_json_file(char *filepath) {
     //从缓冲区中解析出JSON结构
     cJSON *json = cJSON_Parse(json_str);
 
-    print_json(json);
+    print_my_json(json);
 
     //delete cjson
     cJSON_Delete(json);

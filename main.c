@@ -3,7 +3,7 @@
 #include <string.h>
 #include "cJSON.h"
 
-void print_json(cJSON *root) {
+void print_my_json(cJSON *root) {
     //以递归的方式打印json的最内层键值对
     //Recursively print the innermost key-value pair of json
     printf("\n");
@@ -11,12 +11,29 @@ void print_json(cJSON *root) {
     for (int i = 0; i < cJSON_GetArraySize(root); i++) {
         //遍历最外层json键值对
         cJSON *item = cJSON_GetArrayItem(root, i);
-        if (cJSON_Object == item->type) {
-            //如果对应键的值仍为cJSON_Object就递归调用printJson
-            print_json(item);
-        } else {
-            //值不为json对象就直接打印出键和值
-            printf("%s->%s\n", item->string, item->valuestring);
+        switch (item->type) {
+            case cJSON_Object: {
+                print_my_json(item);
+            }
+                break;
+            case cJSON_Number: {
+                //值不为json对象就直接打印出键和值-数字-int
+                printf("%s->%d\n", item->string, item->valueint);
+            }
+                break;
+            case cJSON_String: {
+                //值不为json对象就直接打印出键和值-字串
+                printf("%s->%s\n", item->string, item->valuestring);
+            }
+                break;
+            case cJSON_Array: {
+                printf("数组类型什么:%s->\n", item->string);
+            }
+                break;
+            default: {
+                printf("不处理的类型:%s->\n", item->string);
+            }
+                break;
         }
     }
 }
@@ -46,7 +63,7 @@ void print_json_file(char *filepath) {
     //从缓冲区中解析出JSON结构
     cJSON *json = cJSON_Parse(json_str);
 
-    print_json(json);
+    print_my_json(json);
 
     //delete cjson
     cJSON_Delete(json);
@@ -111,8 +128,42 @@ void create_demo2_json_file(char *filepath) {
     cJSON_Delete(json);
 }
 
+void create_demo3_json_file(char *filepath) {
+    //创建一个空的文档（对象）
+    cJSON *json = cJSON_CreateObject();
+
+    //向文档中增加一个键值对
+    cJSON_AddItemToObject(json, "SN", cJSON_CreateString("JSPRB00001"));
+    //向文档中添加一个键值对，类型为字串
+    cJSON_AddStringToObject(json, "NM", "PR-0001");
+    //向文档中添加一个键值对，类型为字串
+    cJSON_AddStringToObject(json, "MC", "48:B0:2D:2F:8B:E2");
+    //向文档中添加一个键值对，类型为字串
+    cJSON_AddStringToObject(json, "FV", "1.1");
+    //向文档中添加一个键值对，类型为数字
+    cJSON_AddNumberToObject(json, "PV", 1);
+
+    //将json结构格式化到缓冲区
+    char *buf = cJSON_Print(json);
+    printf("new data:\n%s\n", buf);
+
+    //打开文件写入json内容
+    FILE *fp = fopen(filepath, "w");
+    fwrite(buf, strlen(buf), 1, fp);
+    free(buf);
+    fclose(fp);
+
+    //释放json结构所占用的内存
+    cJSON_Delete(json);
+}
+
 int main() {
     printf("Hello, World!\n");
+
+    //创建一个js device json数据的文件
+    create_demo3_json_file("uwv.json");
+    //读取这个文件，并打印
+    print_json_file("uwv.json");
 
     //创建一个包含json数据的文件
     create_demo_json_file("jiance.json");
